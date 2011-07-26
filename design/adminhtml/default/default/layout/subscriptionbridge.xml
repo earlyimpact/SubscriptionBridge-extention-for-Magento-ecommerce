@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <subscriptionbridge_adminhtml_managelink_index>
+        <reference name="content">
+            <block type="subscriptionbridge/adminhtml_managelink" name="managelink" />
+        </reference>
+    </subscriptionbridge_adminhtml_managelink_index>
+     <subscriptionbridge_adminhtml_manageviewlink_index>
+        <reference name="content">
+            <block type="subscriptionbridge/adminhtml_manageviewlink" name="manageviewlink" />
+        </reference>
+    </subscriptionbridge_adminhtml_manageviewlink_index>   
+</layout>
+<!-- marco -->

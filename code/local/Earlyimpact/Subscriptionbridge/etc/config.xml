@@ -1,0 +1,318 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Earlyimpact_Subscriptionbridge>
+            <version>0.1.0</version>
+        </Earlyimpact_Subscriptionbridge>
+    </modules>
+    <frontend>
+        <routers>
+            <subscriptionbridge>
+                <use>standard</use>
+                <args>
+                    <module>Earlyimpact_Subscriptionbridge</module>
+                    <frontName>subscriptionbridge</frontName>
+                </args>
+            </subscriptionbridge>
+        </routers>
+        <layout>
+            <updates>
+                <subscriptionbridge>
+                    <file>subscriptionbridge.xml</file>
+                </subscriptionbridge>
+            </updates>
+        </layout>
+
+
+        
+    </frontend>
+    <admin>
+        <routers>
+			<subscriptionbridge>
+				<use>admin</use>
+				<args>
+					<module>Earlyimpact_Subscriptionbridge</module>
+					<frontName>subscriptionbridge</frontName>
+				</args>
+			</subscriptionbridge>
+        </routers>
+    </admin>
+    <adminhtml>
+		<menu>
+			<subscriptionbridge  module="subscriptionbridge">
+				<title>Subscriptionbridge</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<link module="subscriptionbridge">
+						<title>Create Package Link</title>
+						<sort_order>0</sort_order>
+						<action>subscriptionbridge/adminhtml_managelink</action>
+					</link>
+					<viewlink module="subscriptionbridge">
+						<title>View/ Modify Subscription Packages</title>
+						<sort_order>1</sort_order>
+						<action>subscriptionbridge/adminhtml_manageviewlink</action>
+					</viewlink>					
+					
+				</children>
+			</subscriptionbridge>
+		</menu>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+			         <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <subscriptionbridge_options>
+                                            <title>Subscriptionbridge API</title>
+                                        </subscriptionbridge_options>
+                                         <subscriptionbridge_config>
+                                            <title>Subscriptionbridge Configrations</title>
+                                        </subscriptionbridge_config>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+			
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<subscriptionbridge>
+					<file>subscriptionbridge.xml</file>
+				</subscriptionbridge>
+			</updates>
+		</layout>
+    </adminhtml>   
+    <global>
+ 
+         <rewrite>
+         
+            <earlyimpact_subscriptionbridge_checkout_onepage>
+                <from><![CDATA[#^/checkout/onepage/#]]></from>
+                <to>/subscriptionbridge/checkout_onepage/</to>
+            </earlyimpact_subscriptionbridge_checkout_onepage>
+          
+            <earlyimpact_subscriptionbridge_checkout_multishipping>
+                <from><![CDATA[#^/checkout/multishipping/#]]></from>
+                <to>/subscriptionbridge/checkout_multishipping/</to>
+            </earlyimpact_subscriptionbridge_checkout_multishipping>
+          
+        </rewrite>
+        
+	 <fieldsets>
+	 
+	  		
+	 		<sales_convert_quote_item>	
+				<sb_linkid><to_order_item>*</to_order_item></sb_linkid>
+				<sb_trial><to_order_item>*</to_order_item></sb_trial>
+				<sb_trial_price><to_order_item>*</to_order_item></sb_trial_price>
+				<sb_tc_required><to_order_item>*</to_order_item></sb_tc_required>
+				<sb_tc_text><to_order_item>*</to_order_item></sb_tc_text>
+				<sb_shipping_trial_price><to_order_item>*</to_order_item></sb_shipping_trial_price>
+				<sb_shipping_trial><to_order_item>*</to_order_item></sb_shipping_trial>
+			</sales_convert_quote_item>
+	<!-- 	
+			<sales_convert_order_item>
+				<sb_linkid><to_quote_item>*</to_quote_item></sb_linkid>
+				<sb_trial><to_quote_item>*</to_quote_item></sb_trial>
+				<sb_trial_price><to_quote_item>*</to_quote_item></sb_trial_price>
+            </sales_convert_order_item>
+     -->      
+            
+	 </fieldsets>
+	 
+	<events>
+         <admin_system_config_changed_section_subscriptionbridge_options>
+                <observers>
+                    <subscriptionbridge>
+                        <type>singleton</type>
+                        <class>subscriptionbridge/observer</class>
+                        <method>SBActivation</method>
+                    </subscriptionbridge>
+                </observers>
+        </admin_system_config_changed_section_subscriptionbridge_options>
+        
+         <sales_quote_item_set_product>
+                <observers>
+                    <subscriptionbridge>
+                        <type>singleton</type>
+                        <class>subscriptionbridge/observer</class>
+                        <method>SalesQuoteItemSetProduct</method>
+                    </subscriptionbridge>
+                </observers>
+        </sales_quote_item_set_product> 
+  
+ <!--  
+        
+        <sales_quote_collect_totals_after>
+                <observers>
+                    <subscriptionbridge>
+                        <type>singleton</type>
+                        <class>subscriptionbridge/observer</class>
+                        <method>Test</method>
+                    </subscriptionbridge>
+                </observers>        
+        </sales_quote_collect_totals_after>
+-->		        
+	
+		               
+       
+        
+   </events>   
+   
+    
+      
+        <models>
+            <subscriptionbridge>
+                <class>Earlyimpact_Subscriptionbridge_Model</class>
+                <resourceModel>subscriptionbridge_mysql4</resourceModel>
+            </subscriptionbridge>
+            <subscriptionbridge_mysql4>
+                <class>Earlyimpact_Subscriptionbridge_Model_Mysql4</class>
+                <entities>
+                    <link>
+                        <table>subscriptionbridge_link</table>
+                    </link>
+                </entities>
+            </subscriptionbridge_mysql4>
+ 
+            <checkout>
+            	<rewrite>
+            		<cart>Earlyimpact_Subscriptionbridge_Model_Checkout_Cart</cart>
+            	</rewrite>
+            </checkout>
+            
+            <!-- 
+            <sales>
+            	<rewrite>
+            		<quote>Earlyimpact_Subscriptionbridge_Model_Sales_Quote</quote>
+            	</rewrite>
+            </sales>
+   			-->         
+            
+            
+        </models>
+        <resources>
+            <subscriptionbridge_setup>
+                <setup>
+                    <module>Earlyimpact_Subscriptionbridge</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </subscriptionbridge_setup>
+            <subscriptionbridge_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </subscriptionbridge_write>
+            <subscriptionbridge_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </subscriptionbridge_read>
+        </resources>
+       
+        <blocks>
+     
+            <subscriptionbridge>
+                <class>Earlyimpact_Subscriptionbridge_Block</class>
+            </subscriptionbridge>
+           
+            <checkout>
+            	<rewrite>
+            		<agreements>Earlyimpact_Subscriptionbridge_Block_Checkout_Agreements</agreements>
+            		<cart_totals>Earlyimpact_Subscriptionbridge_Block_Checkout_Cart_Totals</cart_totals>
+            	</rewrite>
+            </checkout>
+            
+             <checkout>
+            	<rewrite>
+            		<onepage_payment_methods>Earlyimpact_Subscriptionbridge_Block_Checkout_Onepage_Payment_Methods</onepage_payment_methods>
+            	</rewrite>
+            </checkout>   
+            
+            <adminhtml>
+            <rewrite>
+              <sales_order_grid>Earlyimpact_Subscriptionbridge_Block_Adminhtml_Sales_Order_Grid</sales_order_grid>
+            </rewrite>
+         	 </adminhtml>
+         	 
+         	 
+         	 
+                    
+     
+        </blocks>
+        <helpers>
+            <subscriptionbridge>
+                <class>Earlyimpact_Subscriptionbridge_Helper</class>
+            </subscriptionbridge>
+            
+	        <checkout>
+	        	<rewrite>
+	           	 <data>Earlyimpact_Subscriptionbridge_Helper_Checkout_Data</data>
+	       	 	</rewrite>
+	    	</checkout>
+    
+        </helpers>
+        
+       
+    </global>
+    
+    
+     <default>
+     	<subscriptionbridge_options>
+     		<api>
+     			<api_url>https://www.subscriptionbridge.com/Subscriptions/Service2.svc/</api_url>
+     		</api>
+     	</subscriptionbridge_options>
+     	
+      	<subscriptionbridge_config>
+     		<messages>
+     			<msg_cart_onesubcart>The shopping cart is currently in use for purchasing a subscription. Only one subscription product can be added to the shopping cart.</msg_cart_onesubcart>
+     			<msg_cart_subnoprod>The shopping cart is currently in use for purchasing a subscription. At this time, you can not add additional products to the cart. If you would like to purchase additional items, please complete the current order and then place a new one. Alternatively, you can empty the shopping  cart and add different products</msg_cart_subnoprod>
+     			<msg_cart_prodnosub>The shopping cart is currently in use. At this time, you can not add a subscription product to the cart. If you would like to purchase subscription items, please first complete the current order and then place a new one</msg_cart_prodnosub>
+     			<msg_checkout_tctitle>Accept SubscriptionBridge terms and condition</msg_checkout_tctitle>
+     			<msg_checkout_cartnotvalid>The shopping cart is not valid. You can add only one subscription product or general products.</msg_checkout_cartnotvalid>
+     		</messages>
+
+<!-- 
+     		<jssettings>		
+     			<pt_widget_url>https://www.subscriptionbridge.com/widget/widget_prototype.js</pt_widget_url>
+     			<pt_json_url>https://www.subscriptionbridge.net/widget/jsonp.js</pt_json_url>   		
+     		</jssettings>
+-->     		
+     		<sbcenterlinks>		
+     			<merchant_center>https://www.subscriptionbridge.com/MerchantCenter/</merchant_center>
+     			<customer_center>https://www.subscriptionbridge.com/CustomerCenter/</customer_center>   		
+     		</sbcenterlinks>     		
+     		
+     	</subscriptionbridge_config>    	
+
+		<payment>
+			<subscriptionbridge>	
+				<active>1</active>
+			    <cctypes>AE,VI,MC,DI</cctypes>
+			    <model>subscriptionbridge/sbpayment_payment</model>
+			    <order_status>pending</order_status>
+			    <title>SubscriptionBridge Credit Card</title>
+			    <allowspecific>0</allowspecific>
+			    <payment_action>authorize</payment_action>
+			</subscriptionbridge>
+		</payment> 	
+     	
+     	
+     	
+     	
+     	
+     	
+     </default>
+</config>

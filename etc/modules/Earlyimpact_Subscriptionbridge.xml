@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Earlyimpact_Subscriptionbridge>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Earlyimpact_Subscriptionbridge>
+    </modules>
+</config> 
